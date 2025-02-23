@@ -7,7 +7,7 @@
     kIntaking, kStopped, kEjecting or something along those lines
   enum for pivot state:
     (this is an assumption and may need to be changed)
-    kStowed, kSwitching, kIntake, kEject
+    kSwitching, kL1, kL2, kL3, kCoral
 
   public functions
     GetAngle()
@@ -21,14 +21,15 @@
     SetPivotTarget()
     SetIntakeTarget()
 
+    bool GetSensor()
+
+    cmd Intake() (intakes until sensor is found that the coral is in the intake)
     Cmd SetPivotTargetCMD()
     Cmd SetIntakeTargetCMD()
 
   private
-    Pivot Motor
-    Intake Motor
-
-    CheckState()
+    Pivot Motor (includes encoder and stuff)
+    Intake Motor (includes encoder and stuff())
 
     PivotState PivotActual
     PivotState PivotTarget
