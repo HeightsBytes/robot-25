@@ -13,10 +13,8 @@
 #include <frc2/command/Commands.h>
 
 RobotContainer::RobotContainer() {
-  m_chooser.AddOption("Test Auto", "test_auto");
-  m_chooser.AddOption("Straight Line", "just_move");
-  m_chooser.AddOption("Balance Path", "red_auto");
-  m_chooser.AddOption("Crazy Auto", "red_crazy_auto");
+  m_chooser.SetDefaultOption("None", "None");
+  m_chooser.AddOption("TestAuto", "TestAuto");
 
   // Other Commands
   pathplanner::NamedCommands::registerCommand(
@@ -49,5 +47,10 @@ void RobotContainer::ConfigureOperatorButtons() {
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-  return pathplanner::PathPlannerAuto(m_chooser.GetSelected()).ToPtr();
+  auto selected = m_chooser.GetSelected();
+  if (selected == "None") {
+    return frc2::cmd::None();
+  } else {
+    return pathplanner::PathPlannerAuto(selected).ToPtr();
+  }
 }

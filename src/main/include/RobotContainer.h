@@ -13,6 +13,7 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
+#include <pathplanner/lib/auto/AutoBuilder.h>
 
 #include <optional>
 #include <string>
@@ -26,6 +27,8 @@ class RobotContainer {
   RobotContainer();
 
   frc2::CommandPtr GetAutonomousCommand();
+  frc::SendableChooser<std::string> m_chooser;
+
 
  private:
 
@@ -41,8 +44,6 @@ class RobotContainer {
   // The robot's subsystems
   DriveSubsystem m_drive;
   // VisionSubsystem& m_vision = VisionSubsystem::GetInstance();
-
-  frc::SendableChooser<std::string> m_chooser;
 
   void ConfigureDriverButtons();
 
