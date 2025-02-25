@@ -97,6 +97,7 @@ namespace AutoConstants {
 
   inline constexpr pathplanner::PIDConstants kPIDTranslation{1.25, 0, 0.07};
   inline constexpr pathplanner::PIDConstants kPIDRotation{1, 0, 0.1};
+  pathplanner::RobotConfig kConfig = pathplanner::RobotConfig::fromGUISettings()
 
 /*
   inline constexpr pathplanner::HolonomicPathFollowerConfig kConfig{
