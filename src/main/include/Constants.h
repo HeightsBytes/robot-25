@@ -7,6 +7,7 @@
 #include <pathplanner/lib/path/PathConstraints.h>
 //#include <pathplanner/lib/config/HolonomicPathFollowerConfig.h>
 #include <pathplanner/lib/config/PIDConstants.h>
+#include <pathplanner/lib/config/RobotConfig.h>
 #include <units/acceleration.h>
 #include <units/angle.h>
 #include <units/angular_acceleration.h>
@@ -97,7 +98,7 @@ namespace AutoConstants {
 
   inline constexpr pathplanner::PIDConstants kPIDTranslation{1.25, 0, 0.07};
   inline constexpr pathplanner::PIDConstants kPIDRotation{1, 0, 0.1};
-  pathplanner::RobotConfig kConfig = pathplanner::RobotConfig::fromGUISettings()
+  inline static pathplanner::RobotConfig kConfig = pathplanner::RobotConfig::fromGUISettings();
 
 /*
   inline constexpr pathplanner::HolonomicPathFollowerConfig kConfig{
