@@ -14,7 +14,8 @@
 
 RobotContainer::RobotContainer() {
   m_chooser.SetDefaultOption("None", "None");
-  m_chooser.AddOption("TestAuto", "TestAuto");
+  m_chooser.AddOption("New Auto", "New Auto");
+  m_chooser.AddOption("super cool auto", "super cool auto");
 
   // Other Commands
   pathplanner::NamedCommands::registerCommand(
