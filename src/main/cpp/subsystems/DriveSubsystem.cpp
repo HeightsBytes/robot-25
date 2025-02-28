@@ -12,22 +12,27 @@ using namespace pathplanner;
 
 DriveSubsystem::DriveSubsystem()
     : m_frontLeft{kFrontLeftDriveMotorPort, kFrontLeftTurningMotorPort,
-                  kFrontLeftTurningEncoderPorts, kFrontLeftOffset},
+                  kFrontLeftTurningEncoderPorts, kFrontLeftOffset, kFrontLeftInverted},
 
       m_rearLeft{kRearLeftDriveMotorPort, kRearLeftTurningMotorPort,
-                 kRearLeftTurningEncoderPorts, kRearLeftOffset},
+                 kRearLeftTurningEncoderPorts, kRearLeftOffset, kRearLeftInverted},
 
       m_frontRight{kFrontRightDriveMotorPort, kFrontRightTurningMotorPort,
-                   kFrontRightTurningEncoderPorts, kFrontRightOffset},
+                   kFrontRightTurningEncoderPorts, kFrontRightOffset, kFrontRightInverted},
 
       m_rearRight{kRearRightDriveMotorPort, kRearRightTurningMotorPort,
-                  kRearRightTurningEncoderPorts, kRearRightOffset},
+                  kRearRightTurningEncoderPorts, kRearRightOffset, kRearRightInverted},
 
       m_gyro(DriveConstants::CanIds::kPidgeonID),
       //m_visionSystem(VisionSubsystem::GetInstance()),
       m_poseEstimator(kDriveKinematics, GetHeading(), GetModulePositions(),
                       frc::Pose2d()),
       m_vision(false) {
+
+  m_rearLeft.ResetEncoders();
+  m_rearRight.ResetEncoders();
+  m_frontLeft.ResetEncoders();
+  m_frontRight.ResetEncoders();
 
   frc::SmartDashboard::PutData("Field", &m_field);
 

@@ -37,7 +37,7 @@ void DefaultDrive::Execute() {
   // Note: x is forwards, y is side to side.
   // This means 'x' is the traditional y direction
   // 'y' is the tradtional x
-  double x = -m_leftX();
+  double x = -m_leftX(); 
   double y = m_leftY();
   double rotationMagnitude = -frc::ApplyDeadband(m_rightX(), 0.03);
 
