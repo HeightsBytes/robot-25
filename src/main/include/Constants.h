@@ -120,3 +120,17 @@ namespace OIConstants {
 inline constexpr int kDriverControllerPort = 0;
 inline constexpr int kOperatorControllerPort = 1;
 }  // namespace OIConstants
+
+namespace ElevatorConstants {
+  inline constexpr int kElevatorMotorPort = 9;
+  inline constexpr double kElevatorEncoderRatio = 1 / 60;
+  inline constexpr double kP = 0.0;
+  inline constexpr double kI = 0.0;
+  inline constexpr double kD = 0.0;
+  inline constexpr int kTopLimitChannel = 0;
+  inline constexpr int kBottomLimitChannel = 0;
+  
+  namespace Positions{
+      
+  } // namespace Positions
+}  // namespace ElevatorConstants
