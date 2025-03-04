@@ -7,70 +7,60 @@
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc/DigitalInput.h>
-#include <rev/SparkMax.h>
+#include <frc/DutyCycleEncoder.h>
+#include <frc/MathUtil.h>
+#include <rev/SparkFlex.h>
+#include <rev/config/SparkFlexConfig.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+
+#include "Constants.h"
 
 class ElevatorSubsystem : public frc2::SubsystemBase {
  public:
-  enum class InnerState{
+  enum class ElevatorState{
     kTop,
     kMiddleTop,
     kMiddleBottom,
     kBottom,
-    kStopped
-  };
-  enum class OuterState{
-    kTop,
-    kMiddleTop,
-    kMiddleBottom,
-    kBottom,
-    kStopped
+    kSwitching
   };
 
   ElevatorSubsystem();
   void Periodic() override;
 
-  bool AtInnerTarget();
-  bool AtOuterTarget();
+  bool AtTarget();
 
-  InnerState GetInnerTarget();
-  OuterState GetOuterTarget();
+  ElevatorState GetTarget();
 
-  void SetInnerTarget(InnerState state);
-  void SetOuterTarget(OuterState state);
+  void SetTarget(ElevatorState state);
 
-  bool GetInnerLimitSwitch();
-  bool GetOuterLimitSwitch();
+  bool GetTopLimitSwitch();
+  bool GetBottomLimitSwitch();
 
-  frc2::CommandPtr SetInnerTargetCMD(InnerState state) {
-    return this->RunOnce([this, state] { SetInnerTarget(state); });
-  }
-  frc2::CommandPtr SetOuterTargetCMD(OuterState state) {
-    return this->RunOnce([this, state] { SetOuterTarget(state); });
+  frc2::CommandPtr SetTargetCMD(ElevatorState state) {
+    return this->RunOnce([this, state] { SetTarget(state); });
   }
 
  private:
-  double StateToOutput(OuterState state) const;
-  double StateToOutput(InnerState state) const;
+  double StateToOutput(ElevatorState state) const;
 
   void CheckState();
 
-  std::string ToStr(InnerState state) const;
-  std::string ToStr(OuterState state) const;
+  std::string ToStr(ElevatorState state) const;
 
   // motors
-  rev::spark::SparkBase m_inner; // this will be changed from base soon to flex or max idk whats going on there
-  rev::spark::SparkBase m_outer;
+  rev::spark::SparkFlex m_elevator;
 
-  rev::spark::SparkBaseConfig m_innerConfig;
-  rev::spark::SparkBaseConfig m_outerConfig;
+  rev::spark::SparkFlexConfig m_elevatorConfig;
 
-  rev::spark::SparkRelativeEncoder m_innerEncoder;
-  rev::spark::SparkRelativeEncoder m_outerEncoder;
+  rev::spark::SparkRelativeEncoder m_elevatorEncoder;
 
-  rev::spark::SparkClosedLoopController m_innerController;
-  rev::spark::SparkClosedLoopController m_outerController;
+  rev::spark::SparkClosedLoopController m_elevatorController;
   // motors
   
-  frc::DigitalInput m_innerLimitSwitch;
-  frc::DigitalInput m_outerLimitSwitch;
+  frc::DigitalInput m_topLimitSwitch;
+  frc::DigitalInput m_bottomLimitSwitch;
+
+  ElevatorState m_target;
+  ElevatorState m_actual;
 };
