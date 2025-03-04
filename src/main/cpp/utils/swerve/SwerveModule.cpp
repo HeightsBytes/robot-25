@@ -6,7 +6,7 @@
 
 #include "Constants.h"
 
-SwerveModule::SwerveModule(int driveMotorPort, int turningMotorPort, int turningEncoderPort, double offset)
+SwerveModule::SwerveModule(int driveMotorPort, int turningMotorPort, int turningEncoderPort, double offset, bool inverted)
     : m_driveMotor(driveMotorPort, rev::spark::SparkMax::MotorType::kBrushless),
     m_turningMotor(turningMotorPort, rev::spark::SparkMax::MotorType::kBrushless),
     m_turningEncoder(turningEncoderPort, offset),
@@ -19,7 +19,7 @@ SwerveModule::SwerveModule(int driveMotorPort, int turningMotorPort, int turning
         //motors break by default
         m_driveConfig.SetIdleMode(rev::spark::SparkMaxConfig::IdleMode::kBrake);
         m_turningConfig.SetIdleMode(rev::spark::SparkMaxConfig::IdleMode::kBrake);
-        m_turningConfig.Inverted(true);
+        m_turningConfig.Inverted(inverted);
 
         // turn conversion factors
         m_turningConfig.encoder

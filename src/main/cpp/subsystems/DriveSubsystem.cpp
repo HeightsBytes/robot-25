@@ -12,28 +12,53 @@ using namespace pathplanner;
 
 DriveSubsystem::DriveSubsystem()
     : m_frontLeft{kFrontLeftDriveMotorPort, kFrontLeftTurningMotorPort,
-                  kFrontLeftTurningEncoderPorts, kFrontLeftOffset},
+                  kFrontLeftTurningEncoderPorts, kFrontLeftOffset, kFrontLeftInverted},
 
       m_rearLeft{kRearLeftDriveMotorPort, kRearLeftTurningMotorPort,
-                 kRearLeftTurningEncoderPorts, kRearLeftOffset},
+                 kRearLeftTurningEncoderPorts, kRearLeftOffset, kRearLeftInverted},
 
       m_frontRight{kFrontRightDriveMotorPort, kFrontRightTurningMotorPort,
-                   kFrontRightTurningEncoderPorts, kFrontRightOffset},
+                   kFrontRightTurningEncoderPorts, kFrontRightOffset, kFrontRightInverted},
 
       m_rearRight{kRearRightDriveMotorPort, kRearRightTurningMotorPort,
-                  kRearRightTurningEncoderPorts, kRearRightOffset},
+                  kRearRightTurningEncoderPorts, kRearRightOffset, kRearRightInverted},
 
       m_gyro(DriveConstants::CanIds::kPidgeonID),
       //m_visionSystem(VisionSubsystem::GetInstance()),
       m_poseEstimator(kDriveKinematics, GetHeading(), GetModulePositions(),
                       frc::Pose2d()),
       m_vision(false) {
+
+  m_rearLeft.ResetEncoders();
+  m_rearRight.ResetEncoders();
+  m_frontLeft.ResetEncoders();
+  m_frontRight.ResetEncoders();
+
   frc::SmartDashboard::PutData("Field", &m_field);
-  /*AutoBuilder::configure(
-      [this] { return GetPose(); }, [this](frc::Pose2d pose) { SetPose(pose); },
+
+  pathplanner::AutoBuilder::configure(
+      [this] { return GetPose(); }, 
+      [this](frc::Pose2d pose) { SetPose(pose); },
       [this] { return GetVelocity(); },
       [this](frc::ChassisSpeeds speeds) { DriveRobotRelative(speeds); },
-      AutoConstants::kConfig, this); */
+      std::make_shared<pathplanner::PPHolonomicDriveController>(
+        AutoConstants::kPIDTranslation,
+        AutoConstants::kPIDRotation
+      ),
+      AutoConstants::kConfig,
+      []() {
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+          auto alliance = frc::DriverStation::GetAlliance();
+          if (alliance) {
+              return alliance.value() == frc::DriverStation::Alliance::kRed;
+          }
+          return false;
+        },
+        this
+      );
 }
 
 // This method will be called once per scheduler run

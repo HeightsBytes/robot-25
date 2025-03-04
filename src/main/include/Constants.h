@@ -7,6 +7,7 @@
 #include <pathplanner/lib/path/PathConstraints.h>
 //#include <pathplanner/lib/config/HolonomicPathFollowerConfig.h>
 #include <pathplanner/lib/config/PIDConstants.h>
+#include <pathplanner/lib/config/RobotConfig.h>
 #include <units/acceleration.h>
 #include <units/angle.h>
 #include <units/angular_acceleration.h>
@@ -18,20 +19,20 @@
 
 namespace DriveConstants {
     namespace CanIds{
-        inline constexpr int kFrontLeftDriveMotorPort = 1; // placeholder
-        inline constexpr int kRearLeftDriveMotorPort = 1;
-        inline constexpr int kFrontRightDriveMotorPort = 1;
-        inline constexpr int kRearRightDriveMotorPort = 1;
+        inline constexpr int kFrontLeftDriveMotorPort = 4; // placeholder
+        inline constexpr int kRearLeftDriveMotorPort = 2;
+        inline constexpr int kFrontRightDriveMotorPort = 6;
+        inline constexpr int kRearRightDriveMotorPort = 8;
 
-        inline constexpr int kFrontLeftTurningMotorPort = 1;
+        inline constexpr int kFrontLeftTurningMotorPort = 3;
         inline constexpr int kRearLeftTurningMotorPort = 1;
-        inline constexpr int kFrontRightTurningMotorPort = 1;
-        inline constexpr int kRearRightTurningMotorPort = 1;
+        inline constexpr int kFrontRightTurningMotorPort = 5;
+        inline constexpr int kRearRightTurningMotorPort = 7;
 
         inline constexpr int kFrontLeftTurningEncoderPorts = 1;
-        inline constexpr int kRearLeftTurningEncoderPorts = 1;
-        inline constexpr int kFrontRightTurningEncoderPorts = 1;
-        inline constexpr int kRearRightTurningEncoderPorts = 1;
+        inline constexpr int kRearLeftTurningEncoderPorts = 2;
+        inline constexpr int kFrontRightTurningEncoderPorts = 3;
+        inline constexpr int kRearRightTurningEncoderPorts = 4;
 
         inline constexpr int kPidgeonID = 0;
     } // namespace CanIds
@@ -39,6 +40,11 @@ namespace DriveConstants {
   inline constexpr double kFrontLeftOffset = 0;
   inline constexpr double kRearRightOffset = 0;
   inline constexpr double kRearLeftOffset = 0;
+
+  inline constexpr bool kFrontRightInverted = true;
+  inline constexpr bool kFrontLeftInverted = false;
+  inline constexpr bool kRearRightInverted = true;
+  inline constexpr bool kRearLeftInverted = false;
 
   inline constexpr auto kMaxChassisSpeed = 4.25_mps;
   inline constexpr auto kMaxAngularSpeed =
@@ -49,10 +55,10 @@ namespace DriveConstants {
   inline constexpr auto kTrackWidth = 0.31369_m;
   inline constexpr auto kTrackLength = 0.31369_m;
 
-  inline frc::SwerveDriveKinematics<4> kDriveKinematics{
+  inline frc::SwerveDriveKinematics<4> kDriveKinematics{ // ++, +-, -+, --
     frc::Translation2d(kTrackLength, kTrackWidth),
-    frc::Translation2d(kTrackLength, -kTrackWidth),
     frc::Translation2d(-kTrackLength, kTrackWidth),
+    frc::Translation2d(kTrackLength, -kTrackWidth),
     frc::Translation2d(-kTrackLength, -kTrackWidth)};
 } // namespace DriveConstants
 
@@ -97,6 +103,7 @@ namespace AutoConstants {
 
   inline constexpr pathplanner::PIDConstants kPIDTranslation{1.25, 0, 0.07};
   inline constexpr pathplanner::PIDConstants kPIDRotation{1, 0, 0.1};
+  inline static pathplanner::RobotConfig kConfig = pathplanner::RobotConfig::fromGUISettings();
 
 /*
   inline constexpr pathplanner::HolonomicPathFollowerConfig kConfig{
