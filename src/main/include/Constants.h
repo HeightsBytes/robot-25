@@ -120,3 +120,8 @@ namespace OIConstants {
 inline constexpr int kDriverControllerPort = 0;
 inline constexpr int kOperatorControllerPort = 1;
 }  // namespace OIConstants
+
+namespace ClawConstants {
+  inline constexpr int kSensorPort = 10;
+  inline constexpr float kPivotEncoderRatio = 0.0;
+}

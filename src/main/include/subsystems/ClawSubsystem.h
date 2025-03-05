@@ -46,8 +46,12 @@
 #include <frc/DigitalInput.h>
 #include <rev/SparkMax.h>
 #include <rev/SparkFlex.h>
+#include <rev/config/SparkMaxConfig.h>
+#include <rev/config/SparkFlexConfig.h>
 #include <units/angle.h>
 #include <units/power.h>
+
+#include "Constants.h"
 
 class ClawSubsystem : public frc2::SubsystemBase {
   enum class IntakeState {
@@ -112,6 +116,9 @@ class ClawSubsystem : public frc2::SubsystemBase {
   rev::spark::SparkMax m_pivot;
   rev::spark::SparkFlex m_intake;
 
+  rev::spark::SparkMaxConfig m_pivotConfig;
+  rev::spark::SparkFlexConfig m_intakeConfig;
+
   rev::spark::SparkAbsoluteEncoder m_pivotEncoder;
   rev::spark::SparkClosedLoopController m_pivotController;
   // motors
@@ -121,6 +128,6 @@ class ClawSubsystem : public frc2::SubsystemBase {
 
   IntakeState m_intakeTarget;
 
-  frc::DigitalInput m_sensor{10};
+  frc::DigitalInput m_sensor{ClawConstants::kSensorPort};
 
 };
