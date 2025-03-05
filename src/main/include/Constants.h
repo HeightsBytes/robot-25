@@ -131,6 +131,10 @@ namespace ElevatorConstants {
   inline constexpr int kBottomLimitChannel = 0;
   
   namespace Positions{
-      
+      inline constexpr double kTop = 0;
+      inline constexpr double kMiddleTop = 0;
+      inline constexpr double kMiddleBottom = 0;
+      inline constexpr double kBottom = 0;
+      inline constexpr double kTolerance = 0;
   } // namespace Positions
 }  // namespace ElevatorConstants
