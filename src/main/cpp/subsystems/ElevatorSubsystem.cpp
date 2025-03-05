@@ -29,9 +29,33 @@ void ElevatorSubsystem::Periodic() {
     m_elevatorController.SetReference(StateToOutput(m_target), rev::spark::SparkFlex::ControlType::kPosition);
 
     frc::SmartDashboard::PutString("Elevator Position", ToStr(m_actual));
+    frc::SmartDashboard::PutString("Elevator Target", ToStr(m_target));
 }
 
-void ElevatorSubsytem::CheckState(){
+double ElevatorSubsystem::StateToOutput(ElevatorState state) const{
+    using enum ElevatorState;
+    namespace P = ElevatorConstants::Positions;
+
+    switch(state){
+        case kTop:
+            return P::kTop;
+            break;
+        case kMiddleTop:
+            return P::kMiddleTop;
+            break;
+        case kMiddleBottom:
+            return P::kMiddleBottom;
+            break;
+        case kBottom:
+            return P::kBottom;
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+void ElevatorSubsystem::CheckState(){
     using enum ElevatorState;
     namespace P = ElevatorConstants::Positions;
 
