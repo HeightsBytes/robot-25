@@ -122,6 +122,29 @@ inline constexpr int kOperatorControllerPort = 1;
 }  // namespace OIConstants
 
 namespace ClawConstants {
+  inline constexpr int kIntakeMotorPort = 22;
+  inline constexpr int kPivotMotorPort = 44;
   inline constexpr int kSensorPort = 10;
+
   inline constexpr float kPivotEncoderRatio = 0.0;
+
+  inline constexpr double kP = 0;
+  inline constexpr double kI = 0;
+  inline constexpr double kD = 0;
+  
+  namespace Speeds{
+    inline constexpr double kStopped = 0;
+    inline constexpr double kIntake = .3;
+    inline constexpr double kEject = .3;
+  }
+  namespace PivotPositions{
+    inline constexpr units::degree_t kL1 = 0_deg;
+    inline constexpr units::degree_t kL2 = 0_deg;
+    inline constexpr units::degree_t kL3 = 0_deg;
+    inline constexpr units::degree_t kL4 = 0_deg;
+    inline constexpr units::degree_t kCoral = 0_deg;
+    
+    inline constexpr units::degree_t kTollerance = 5_deg;
+  }
+  
 }

@@ -44,6 +44,8 @@
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc/DigitalInput.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/MathUtil.h>
 #include <rev/SparkMax.h>
 #include <rev/SparkFlex.h>
 #include <rev/config/SparkMaxConfig.h>
@@ -72,7 +74,9 @@ class ClawSubsystem : public frc2::SubsystemBase {
 
   void Periodic() override;
 
-  units::degree_t GetPivotAngle();
+  units::degree_t GetPivotAngle() const{
+    return units::degree_t(m_pivotEncoder.GetPosition());
+  };
   bool AtPivotTarget();
 
   void SetPivotTarget(PivotState state);

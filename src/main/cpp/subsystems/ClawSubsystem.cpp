@@ -22,9 +22,147 @@ ClawSubsystem::ClawSubsystem() :
             .Inverted(false);
         
         m_pivotConfig.encoder
-            .PositionConversionFactor(ClawConstants::kPivotEncoderRatio)
+            .PositionConversionFactor(ClawConstants::kPivotEncoderRatio);
+        m_pivotConfig.closedLoop
+            .Pid(
+                ClawConstants::kP, 
+                ClawConstants::kI, 
+                ClawConstants::kD)
+            .PositionWrappingEnabled(false)
+            .OutputRange(-1, 1);
 
+        m_intake.Configure(m_intakeConfig, rev::spark::SparkMax::ResetMode::kResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
+        m_pivot.Configure(m_pivotConfig, rev::spark::SparkMax::ResetMode::kResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
     }   
 
 // This method will be called once per scheduler run
-void ClawSubsystem::Periodic() {}
+void ClawSubsystem::Periodic() {
+    CheckState();
+
+    m_pivotController.SetReference(StateToOutput(m_pivotTarget).value(), 
+        rev::spark::SparkMax::ControlType::kPosition);
+    
+    m_intake.Set(StateToOutput(m_intakeTarget));
+
+    frc::SmartDashboard::PutNumber("Claw Angle", GetPivotAngle().value());
+}
+
+double ClawSubsystem::StateToOutput(IntakeState state) const{
+    using enum IntakeState;
+    namespace IS = ClawConstants::Speeds;
+
+    switch(state){
+        case kStopped:
+            return IS::kStopped;
+            break;
+        case kIntaking:
+            return IS::kIntake;
+            break;
+        case kEjecting:
+            return IS::kEject;
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+units::degree_t ClawSubsystem::StateToOutput(PivotState state) const {
+    using enum PivotState;
+    namespace PP = ClawConstants::PivotPositions;
+
+    switch(state){
+        case kL1:
+            return PP::kL1;
+            break;
+        case kL2:
+            return PP::kL2;
+            break;
+        case kL3:
+            return PP::kL3;
+            break;
+        case kL4:
+            return PP::kL3;
+            break;
+        case kCoral:
+            return PP::kCoral;
+            break;
+        default:
+            return 0_deg;
+            break;
+    }
+}
+
+void ClawSubsystem::CheckState(){
+    using enum PivotState;
+    namespace PP = ClawConstants::PivotPositions;
+
+    units::degree_t angle = GetPivotAngle();
+
+    if(frc::IsNear(PP::kL1, angle, PP::kTollerance)){
+        m_pivotActual =  kL1;
+        return;
+    }
+    if(frc::IsNear(PP::kL2, angle, PP::kTollerance)){
+        m_pivotActual =  kL2;
+        return;
+    }
+    if(frc::IsNear(PP::kL3, angle, PP::kTollerance)){
+        m_pivotActual =  kL3;
+        return;
+    }
+    if(frc::IsNear(PP::kL1, angle, PP::kTollerance)){
+        m_pivotActual =  kL3;
+        return;
+    }
+        if(frc::IsNear(PP::kCoral, angle, PP::kTollerance)){
+        m_pivotActual =  kCoral;
+        return;
+    }
+
+    m_pivotActual = kSwitching;
+}
+
+std::string ClawSubsystem::ToStr(IntakeState state) const{
+    using enum IntakeState;
+    
+    switch(state){
+        case kIntaking:
+            return "Intaking";
+            break;
+        case kEjecting:
+            return "Ejecting";
+            break;
+        case kStopped:
+            return "Stopped";
+            break;
+    }
+}
+
+std::string ClawSubsystem::ToStr(PivotState state) const{
+    using enum PivotState;
+
+    switch(state){
+        case kL1:
+            return "L1";
+            break;
+        case kL2:
+            return "L2";
+            break;
+        case kL3:
+            return "L3";
+            break;
+        case kL4:
+            return "L4";
+            break;
+        case kCoral:
+            return "Coral";
+            break;
+        case kSwitching:
+            return "Switching";
+            break;
+        default:
+            return "";
+            break;
+    }
+}
