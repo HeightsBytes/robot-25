@@ -6,19 +6,38 @@
 
 ElevatorSubsystem::ElevatorSubsystem() :
     m_elevator(ElevatorConstants::kElevatorMotorPort, rev::spark::SparkFlex::MotorType::kBrushless),
+    m_elevator2(ElevatorConstants::kElevatorMotor2Port, rev::spark::SparkFlex::MotorType::kBrushless),
+
     m_elevatorEncoder(m_elevator.GetEncoder()),
+    m_elevator2Encoder(m_elevator2.GetEncoder()),
+
     m_elevatorController(m_elevator.GetClosedLoopController()),
+    m_elevator2Controller(m_elevator2.GetClosedLoopController()),
+
     m_topLimitSwitch(ElevatorConstants::kTopLimitChannel),
     m_bottomLimitSwitch(ElevatorConstants::kBottomLimitChannel)
     {
-    m_elevatorConfig.SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kBrake);
+    m_elevatorConfig
+        .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kBrake)
+        .Inverted(true);
+    m_elevator2Config
+        .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kBrake)
+        .Inverted(false);
+
     m_elevatorConfig.encoder
         .PositionConversionFactor(ElevatorConstants::kElevatorEncoderRatio);
+    m_elevator2Config.encoder
+        .PositionConversionFactor(ElevatorConstants::kElevatorEncoderRatio);
+    
     m_elevatorConfig.closedLoop
+        .PositionWrappingEnabled(false)
+        .Pid(ElevatorConstants::kP, ElevatorConstants::kI, ElevatorConstants::kD);
+    m_elevator2Config.closedLoop
         .PositionWrappingEnabled(false)
         .Pid(ElevatorConstants::kP, ElevatorConstants::kI, ElevatorConstants::kD);
 
     m_elevator.Configure(m_elevatorConfig, rev::spark::SparkFlex::ResetMode::kResetSafeParameters, rev::spark::SparkFlex::PersistMode::kPersistParameters);
+    m_elevator2.Configure(m_elevator2Config, rev::spark::SparkFlex::ResetMode::kResetSafeParameters, rev::spark::SparkFlex::PersistMode::kPersistParameters);
         
 }
 
@@ -27,6 +46,7 @@ void ElevatorSubsystem::Periodic() {
     CheckState();
 
     m_elevatorController.SetReference(StateToOutput(m_target), rev::spark::SparkFlex::ControlType::kPosition);
+    m_elevator2Controller.SetReference(StateToOutput(m_target), rev::spark::SparkFlex::ControlType::kPosition);
 
     frc::SmartDashboard::PutString("Elevator Position", ToStr(m_actual));
     frc::SmartDashboard::PutString("Elevator Target", ToStr(m_target));

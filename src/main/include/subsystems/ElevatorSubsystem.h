@@ -50,12 +50,16 @@ class ElevatorSubsystem : public frc2::SubsystemBase {
 
   // motors
   rev::spark::SparkFlex m_elevator;
+  rev::spark::SparkFlex m_elevator2;
 
   rev::spark::SparkFlexConfig m_elevatorConfig;
+  rev::spark::SparkFlexConfig m_elevator2Config;
 
   rev::spark::SparkRelativeEncoder m_elevatorEncoder;
+  rev::spark::SparkRelativeEncoder m_elevator2Encoder;
 
   rev::spark::SparkClosedLoopController m_elevatorController;
+  rev::spark::SparkClosedLoopController m_elevator2Controller;
   // motors
   
   frc::DigitalInput m_topLimitSwitch;
