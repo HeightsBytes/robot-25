@@ -57,8 +57,8 @@ SwerveModule::SwerveModule(int driveMotorPort, int turningMotorPort, int turning
         m_driveMotor.Configure(m_driveConfig, rev::spark::SparkMax::ResetMode::kResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
         m_turningMotor.Configure(m_turningConfig, rev::spark::SparkMax::ResetMode::kResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
 
-        m_turningMotor.GetEncoder().SetPosition(m_turningEncoder.Get().value());
-
+        //sleep(10);
+        m_sparkTurnEncoder.SetPosition(m_turningEncoder.Get().value());
     } // constructor
 
 frc::SwerveModuleState SwerveModule::GetState() const {

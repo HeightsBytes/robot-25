@@ -42,9 +42,9 @@ namespace DriveConstants {
   inline constexpr double kRearLeftOffset = 0;
 
   inline constexpr bool kFrontRightInverted = true;
-  inline constexpr bool kFrontLeftInverted = false;
+  inline constexpr bool kFrontLeftInverted = true;
   inline constexpr bool kRearRightInverted = true;
-  inline constexpr bool kRearLeftInverted = false;
+  inline constexpr bool kRearLeftInverted = true;
 
   inline constexpr auto kMaxChassisSpeed = 4.25_mps;
   inline constexpr auto kMaxAngularSpeed =
