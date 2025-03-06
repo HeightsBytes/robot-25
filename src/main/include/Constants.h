@@ -36,10 +36,10 @@ namespace DriveConstants {
 
         inline constexpr int kPidgeonID = 0;
     } // namespace CanIds
-  inline constexpr double kFrontRightOffset = 0;
-  inline constexpr double kFrontLeftOffset = 0;
-  inline constexpr double kRearRightOffset = 0;
-  inline constexpr double kRearLeftOffset = 0;
+  inline constexpr double kFrontRightOffset = 104.77 - 180;
+  inline constexpr double kFrontLeftOffset = -133.95;
+  inline constexpr double kRearRightOffset = 15.03;
+  inline constexpr double kRearLeftOffset = -56.43 - 180;
 
   inline constexpr bool kFrontRightInverted = true;
   inline constexpr bool kFrontLeftInverted = true;
@@ -57,8 +57,8 @@ namespace DriveConstants {
 
   inline frc::SwerveDriveKinematics<4> kDriveKinematics{ // ++, +-, -+, --
     frc::Translation2d(kTrackLength, kTrackWidth),
-    frc::Translation2d(-kTrackLength, kTrackWidth),
     frc::Translation2d(kTrackLength, -kTrackWidth),
+    frc::Translation2d(-kTrackLength, kTrackWidth),
     frc::Translation2d(-kTrackLength, -kTrackWidth)};
 } // namespace DriveConstants
 
