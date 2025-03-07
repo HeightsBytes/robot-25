@@ -45,10 +45,13 @@ void RobotContainer::ConfigureDriverButtons() {
 }
 
 void RobotContainer::ConfigureOperatorButtons() {
-  m_operatorController.A().OnTrue(frc2::cmd::Print("Example!"));
   if(!frc::SmartDashboard::GetBoolean("Operator Manual Mode", false)){
-    m_operatorController.RightTrigger().OnTrue(m_elevator.SetTargetCMD(m_elevator.GetNextState(m_elevator.GetTarget())));
-    m_operatorController.RightBumper().OnTrue(m_elevator.SetTargetCMD(m_elevator.GetPreviousState(m_elevator.GetTarget())));
+    m_operatorController.A().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kMiddleBottom));
+    m_operatorController.B().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kBottom));
+    m_operatorController.X().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kMiddleTop));
+    m_operatorController.Y().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kTop));
+
+    
   }
 }
 

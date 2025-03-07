@@ -39,12 +39,12 @@ ClawSubsystem::ClawSubsystem() :
 void ClawSubsystem::Periodic() {
     CheckState();
 
-    m_pivotController.SetReference(StateToOutput(m_pivotTarget).value(), 
+    m_pivotController.SetReference(StateToOutput(m_pivotTarget), 
         rev::spark::SparkMax::ControlType::kPosition);
     
     m_intake.Set(StateToOutput(m_intakeTarget));
 
-    frc::SmartDashboard::PutNumber("Claw Angle", GetPivotAngle().value());
+    frc::SmartDashboard::PutNumber("Claw Angle", GetPivotAngle());
 }
 
 double ClawSubsystem::StateToOutput(IntakeState state) const{
@@ -67,7 +67,7 @@ double ClawSubsystem::StateToOutput(IntakeState state) const{
     }
 }
 
-units::degree_t ClawSubsystem::StateToOutput(PivotState state) const {
+double ClawSubsystem::StateToOutput(PivotState state) const {
     using enum PivotState;
     namespace PP = ClawConstants::PivotPositions;
 
@@ -88,7 +88,7 @@ units::degree_t ClawSubsystem::StateToOutput(PivotState state) const {
             return PP::kCoral;
             break;
         default:
-            return 0_deg;
+            return 0;
             break;
     }
 }
@@ -97,7 +97,7 @@ void ClawSubsystem::CheckState(){
     using enum PivotState;
     namespace PP = ClawConstants::PivotPositions;
 
-    units::degree_t angle = GetPivotAngle();
+    double angle = GetPivotAngle();
 
     if(frc::IsNear(PP::kL1, angle, PP::kTollerance)){
         m_pivotActual =  kL1;

@@ -74,8 +74,8 @@ class ClawSubsystem : public frc2::SubsystemBase {
 
   void Periodic() override;
 
-  units::degree_t GetPivotAngle() const{
-    return units::degree_t(m_pivotEncoder.GetPosition());
+  double GetPivotAngle() const{
+    return m_pivotEncoder.GetPosition();
   };
   bool AtPivotTarget();
 
@@ -108,7 +108,7 @@ class ClawSubsystem : public frc2::SubsystemBase {
   }
 
  private:
-  units::degree_t StateToOutput(PivotState state) const;
+  double StateToOutput(PivotState state) const;
   double StateToOutput(IntakeState state) const;
 
   void CheckState();
