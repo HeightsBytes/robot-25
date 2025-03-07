@@ -32,8 +32,8 @@ RobotContainer::RobotContainer() {
 
   // Uses right trigger + left stick axis + right stick axis
   m_drive.SetDefaultCommand(DefaultDrive(
-      &m_drive, [this] { return m_driverController.GetLeftY(); },
-      [this] { return m_driverController.GetLeftX(); },
+      &m_drive, [this] { return m_driverController.GetLeftX(); },
+      [this] { return m_driverController.GetLeftY(); },
       [this] { return m_driverController.GetRightX(); },
       [this] { return m_driverController.GetRightTriggerAxis(); }));
 }

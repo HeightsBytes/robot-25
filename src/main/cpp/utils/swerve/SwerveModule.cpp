@@ -57,8 +57,8 @@ SwerveModule::SwerveModule(int driveMotorPort, int turningMotorPort, int turning
         m_driveMotor.Configure(m_driveConfig, rev::spark::SparkMax::ResetMode::kResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
         m_turningMotor.Configure(m_turningConfig, rev::spark::SparkMax::ResetMode::kResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
 
-        m_turningMotor.GetEncoder().SetPosition(m_turningEncoder.Get().value());
-
+        //sleep(10);
+        m_sparkTurnEncoder.SetPosition(m_turningEncoder.Get().value());
     } // constructor
 
 frc::SwerveModuleState SwerveModule::GetState() const {
@@ -77,7 +77,7 @@ frc::SwerveModulePosition SwerveModule::GetPosition() const {
 
 void SwerveModule::SetDesiredState(const frc::SwerveModuleState& referenceState) {
   // Optimize the reference state to avoid spinning further than 90 degrees
-  const auto state = frc::SwerveModuleState::Optimize(
+   const auto state = frc::SwerveModuleState::Optimize(
       referenceState, units::radian_t(m_sparkTurnEncoder.GetPosition()));
 
   if (std::fabs(state.speed.value()) < 0.01) {

@@ -29,11 +29,6 @@ DriveSubsystem::DriveSubsystem()
                       frc::Pose2d()),
       m_vision(false) {
 
-  m_rearLeft.ResetEncoders();
-  m_rearRight.ResetEncoders();
-  m_frontLeft.ResetEncoders();
-  m_frontRight.ResetEncoders();
-
   frc::SmartDashboard::PutData("Field", &m_field);
 
   pathplanner::AutoBuilder::configure(

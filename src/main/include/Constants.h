@@ -36,15 +36,15 @@ namespace DriveConstants {
 
         inline constexpr int kPidgeonID = 0;
     } // namespace CanIds
-  inline constexpr double kFrontRightOffset = 0;
-  inline constexpr double kFrontLeftOffset = 0;
-  inline constexpr double kRearRightOffset = 0;
-  inline constexpr double kRearLeftOffset = 0;
+  inline constexpr double kFrontRightOffset = 104.77 - 180;
+  inline constexpr double kFrontLeftOffset = -133.95;
+  inline constexpr double kRearRightOffset = 15.03;
+  inline constexpr double kRearLeftOffset = -56.43 - 180;
 
   inline constexpr bool kFrontRightInverted = true;
-  inline constexpr bool kFrontLeftInverted = false;
+  inline constexpr bool kFrontLeftInverted = true;
   inline constexpr bool kRearRightInverted = true;
-  inline constexpr bool kRearLeftInverted = false;
+  inline constexpr bool kRearLeftInverted = true;
 
   inline constexpr auto kMaxChassisSpeed = 4.25_mps;
   inline constexpr auto kMaxAngularSpeed =
@@ -57,8 +57,8 @@ namespace DriveConstants {
 
   inline frc::SwerveDriveKinematics<4> kDriveKinematics{ // ++, +-, -+, --
     frc::Translation2d(kTrackLength, kTrackWidth),
-    frc::Translation2d(-kTrackLength, kTrackWidth),
     frc::Translation2d(kTrackLength, -kTrackWidth),
+    frc::Translation2d(-kTrackLength, kTrackWidth),
     frc::Translation2d(-kTrackLength, -kTrackWidth)};
 } // namespace DriveConstants
 
@@ -121,6 +121,7 @@ inline constexpr int kDriverControllerPort = 0;
 inline constexpr int kOperatorControllerPort = 1;
 }  // namespace OIConstants
 
+
 namespace ClawConstants {
   inline constexpr int kIntakeMotorPort = 22;
   inline constexpr int kPivotMotorPort = 44;
@@ -148,3 +149,22 @@ namespace ClawConstants {
   }
   
 }
+
+namespace ElevatorConstants {
+  inline constexpr int kElevatorMotorPort = 10;
+  inline constexpr int kElevatorMotor2Port = 11;
+  inline constexpr double kElevatorEncoderRatio = 1 / 60;
+  inline constexpr double kP = 0.0;
+  inline constexpr double kI = 0.0;
+  inline constexpr double kD = 0.0;
+  inline constexpr int kTopLimitChannel = 0;
+  inline constexpr int kBottomLimitChannel = 0;
+  
+  namespace Positions{
+      inline constexpr double kTop = 0;
+      inline constexpr double kMiddleTop = 0;
+      inline constexpr double kMiddleBottom = 0;
+      inline constexpr double kBottom = 0;
+      inline constexpr double kTolerance = 0;
+  } // namespace Positions
+}  // namespace ElevatorConstants

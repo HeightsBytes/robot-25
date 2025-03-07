@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "utils/swerve/CANCoder.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 using namespace hb;
 using namespace ctre::phoenix::sensors;
@@ -14,6 +15,8 @@ S_CANCoder::S_CANCoder(int Id, double offset = 0)
 
 units::radian_t S_CANCoder::Get() {
   double rv = GetAbsolutePosition() - m_offset;
+  frc::SmartDashboard::PutNumber("cancoder abs position", GetAbsolutePosition());
+  frc::SmartDashboard::PutNumber("cancoder position", GetPosition());
 
   if (rv < 0.0)
     rv += 360.0;
