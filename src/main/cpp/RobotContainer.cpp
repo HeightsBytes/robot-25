@@ -25,6 +25,7 @@ RobotContainer::RobotContainer() {
   frc::SmartDashboard::PutData("Auto Chooser", &m_chooser);
   frc::SmartDashboard::PutData("Command Scheduler",
                                &frc2::CommandScheduler::GetInstance());
+  frc::SmartDashboard::PutBoolean("Operator Manual Mode", false);
 
   // Configure the button bindings
   ConfigureDriverButtons();
@@ -45,6 +46,10 @@ void RobotContainer::ConfigureDriverButtons() {
 
 void RobotContainer::ConfigureOperatorButtons() {
   m_operatorController.A().OnTrue(frc2::cmd::Print("Example!"));
+  if(!frc::SmartDashboard::GetBoolean("Operator Manual Mode", false)){
+    m_operatorController.RightTrigger().OnTrue(m_elevator.SetTargetCMD(m_elevator.GetNextState(m_elevator.GetTarget())));
+    m_operatorController.RightBumper().OnTrue(m_elevator.SetTargetCMD(m_elevator.GetPreviousState(m_elevator.GetTarget())));
+  }
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

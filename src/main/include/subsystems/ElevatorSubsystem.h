@@ -28,14 +28,28 @@ class ElevatorSubsystem : public frc2::SubsystemBase {
   ElevatorSubsystem();
   void Periodic() override;
 
-  bool AtTarget();
+  bool AtTarget(){
+    return m_actual == m_target;
+  };
 
-  ElevatorState GetTarget();
+  ElevatorState GetTarget() const{
+    return m_target;
+  };
+  ElevatorState GetActual() const{
+    return m_actual;
+  };
 
   void SetTarget(ElevatorState state);
 
-  bool GetTopLimitSwitch();
-  bool GetBottomLimitSwitch();
+  ElevatorState GetNextState(ElevatorState state) const;
+  ElevatorState GetPreviousState(ElevatorState state) const;
+
+  bool GetTopLimitSwitch() const {
+    return m_topLimitSwitch.Get();
+  };
+  bool GetBottomLimitSwitch() const {
+    return m_bottomLimitSwitch.Get();
+  };
 
   frc2::CommandPtr SetTargetCMD(ElevatorState state) {
     return this->RunOnce([this, state] { SetTarget(state); });

@@ -20,6 +20,7 @@
 
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
+#include "subsystems/ElevatorSubsystem.h"
 #include "commands/DefaultDrive.h"
 
 class RobotContainer {
@@ -43,6 +44,7 @@ class RobotContainer {
 
   // The robot's subsystems
   DriveSubsystem m_drive;
+  ElevatorSubsystem m_elevator;
   // VisionSubsystem& m_vision = VisionSubsystem::GetInstance();
 
   void ConfigureDriverButtons();

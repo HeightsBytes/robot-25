@@ -15,7 +15,9 @@ ElevatorSubsystem::ElevatorSubsystem() :
     m_elevator2Controller(m_elevator2.GetClosedLoopController()),
 
     m_topLimitSwitch(ElevatorConstants::kTopLimitChannel),
-    m_bottomLimitSwitch(ElevatorConstants::kBottomLimitChannel)
+    m_bottomLimitSwitch(ElevatorConstants::kBottomLimitChannel),
+
+    m_target(ElevatorState::kBottom)
     {
     m_elevatorConfig
         .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kBrake)
@@ -120,6 +122,48 @@ std::string ElevatorSubsystem::ToStr(ElevatorState state) const {
             break;
         default:
             return "Unknown";
+            break;
+    }
+}
+
+ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetNextState(ElevatorState state) const {
+    using enum ElevatorState;
+    switch(state) {
+        case kTop:
+            return kTop;
+            break;
+        case kMiddleTop:
+            return kTop;
+            break;
+        case kMiddleBottom:
+            return kMiddleTop;
+            break;
+        case kBottom:
+            return kMiddleBottom;
+            break;
+        default:
+            return kBottom;
+            break;
+    }
+}
+
+ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetPreviousState(ElevatorState state) const {
+    using enum ElevatorState;
+    switch(state) {
+        case kTop:
+            return kMiddleTop;
+            break;
+        case kMiddleTop:
+            return kMiddleBottom;
+            break;
+        case kMiddleBottom:
+            return kBottom;
+            break;
+        case kBottom:
+            return kBottom;
+            break;
+        default:
+            return kBottom;
             break;
     }
 }
