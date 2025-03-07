@@ -129,9 +129,9 @@ namespace ClawConstants {
 
   inline constexpr float kPivotEncoderRatio = 0.0;
 
-  inline constexpr double kP = 0;
+  inline constexpr double kP = 0.20000000298023224;
   inline constexpr double kI = 0;
-  inline constexpr double kD = 0;
+  inline constexpr double kD = 0.10999999940395355;
   
   namespace Speeds{
     inline constexpr double kStopped = 0;
@@ -139,13 +139,13 @@ namespace ClawConstants {
     inline constexpr double kEject = .3;
   }
   namespace PivotPositions{
-    inline constexpr units::degree_t kL1 = 0_deg;
-    inline constexpr units::degree_t kL2 = 0_deg;
-    inline constexpr units::degree_t kL3 = 0_deg;
-    inline constexpr units::degree_t kL4 = 0_deg;
-    inline constexpr units::degree_t kCoral = 0_deg;
+    inline constexpr double kL1 = -5.8;
+    inline constexpr double kL2 = -5.8;
+    inline constexpr double kL3 = 0;
+    inline constexpr double kL4 = 0;
+    inline constexpr double kCoral = 0;
     
-    inline constexpr units::degree_t kTollerance = 5_deg;
+    inline constexpr double kTollerance = 5;
   }
   
 }
