@@ -13,23 +13,23 @@ ElevatorSubsystem::ElevatorSubsystem() :
 
     m_elevatorController(m_elevator.GetClosedLoopController()),
     m_elevator2Controller(m_elevator2.GetClosedLoopController()),
-
+/*
     m_topLimitSwitch(ElevatorConstants::kTopLimitChannel),
     m_bottomLimitSwitch(ElevatorConstants::kBottomLimitChannel),
-
-    m_target(ElevatorState::kBottom)
+*/
+    m_target(ElevatorState::kIntake)
     {
     m_elevatorConfig
-        .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kBrake)
+        .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast)
         .Inverted(true);
     m_elevator2Config
-        .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kBrake)
+        .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast)
         .Inverted(false);
 
-    m_elevatorConfig.encoder
-        .PositionConversionFactor(ElevatorConstants::kElevatorEncoderRatio);
-    m_elevator2Config.encoder
-        .PositionConversionFactor(ElevatorConstants::kElevatorEncoderRatio);
+    //m_elevatorConfig.encoder
+        //.PositionConversionFactor(ElevatorConstants::kElevatorEncoderRatio);
+    //m_elevator2Config.encoder
+        //.PositionConversionFactor(ElevatorConstants::kElevatorEncoderRatio);
     
     m_elevatorConfig.closedLoop
         .PositionWrappingEnabled(false)
@@ -59,17 +59,20 @@ double ElevatorSubsystem::StateToOutput(ElevatorState state) const{
     namespace P = ElevatorConstants::Positions;
 
     switch(state){
-        case kTop:
-            return P::kTop;
+        case kL4:
+            return P::kL4;
             break;
-        case kMiddleTop:
-            return P::kMiddleTop;
+        case kL3:
+            return P::kL3;
             break;
-        case kMiddleBottom:
-            return P::kMiddleBottom;
+        case kL2:
+            return P::kL2;
             break;
-        case kBottom:
-            return P::kBottom;
+        case kL1:
+            return P::kL1;
+            break;
+        case kIntake:
+            return P::kIntake;
             break;
         default:
             return 0;
@@ -83,20 +86,24 @@ void ElevatorSubsystem::CheckState(){
 
     double position = m_elevatorEncoder.GetPosition();
 
-    if(frc::IsNear(P::kTop, position, P::kTolerance)){
-        m_actual = kTop;
+    if(frc::IsNear(P::kL4, position, P::kTolerance)){
+        m_actual = kL4;
         return;
     }
-    if(frc::IsNear(P::kMiddleTop, position, P::kTolerance)){
-        m_actual = kMiddleTop;
+    if(frc::IsNear(P::kL3, position, P::kTolerance)){
+        m_actual = kL3;
         return;
     }
-    if(frc::IsNear(P::kMiddleBottom, position, P::kTolerance)){
-        m_actual = kMiddleBottom;
+    if(frc::IsNear(P::kL2, position, P::kTolerance)){
+        m_actual = kL2;
         return;
     }
-    if(frc::IsNear(P::kBottom, position, P::kTolerance)){
-        m_actual = kBottom;
+    if(frc::IsNear(P::kL1, position, P::kTolerance)){
+        m_actual = kL1;
+        return;
+    }
+    if(frc::IsNear(P::kIntake, position, P::kTolerance)){
+        m_actual = kIntake;
         return;
     }
     
@@ -105,17 +112,20 @@ void ElevatorSubsystem::CheckState(){
 std::string ElevatorSubsystem::ToStr(ElevatorState state) const {
     using enum ElevatorState;
     switch(state) {
-        case kTop:
-            return "Top";
+        case kL4:
+            return "L4";
             break;
-        case kMiddleTop:
-            return "Middle Top";
+        case kL3:
+            return "L3";
             break;
-        case kMiddleBottom:
-            return "Middle Bottom";
+        case kL2:
+            return "L2";
             break;
-        case kBottom:
-            return "Bottom";
+        case kL1:
+            return "L1";
+            break;
+        case kIntake:
+            return "Intake";
             break;
         case kSwitching:
             return "Switching";
@@ -126,44 +136,50 @@ std::string ElevatorSubsystem::ToStr(ElevatorState state) const {
     }
 }
 
-ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetNextState(ElevatorState state) const {
+ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetNextState(ElevatorState state) {
     using enum ElevatorState;
     switch(state) {
-        case kTop:
-            return kTop;
+        case kL4:
+            return kL4;
             break;
-        case kMiddleTop:
-            return kTop;
+        case kL3:
+            return kL4;
             break;
-        case kMiddleBottom:
-            return kMiddleTop;
+        case kL2:
+            return kL3;
             break;
-        case kBottom:
-            return kMiddleBottom;
+        case kL1:
+            return kL2;
+            break;
+        case kIntake:
+            return kL1;
             break;
         default:
-            return kBottom;
+            return kIntake;
             break;
     }
 }
 
-ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetPreviousState(ElevatorState state) const {
+ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetPreviousState(ElevatorState state) {
     using enum ElevatorState;
     switch(state) {
-        case kTop:
-            return kMiddleTop;
+        case kL4:
+            return kL3;
             break;
-        case kMiddleTop:
-            return kMiddleBottom;
+        case kL3:
+            return kL2;
             break;
-        case kMiddleBottom:
-            return kBottom;
+        case kL2:
+            return kL1;
             break;
-        case kBottom:
-            return kBottom;
+        case kL1:
+            return kIntake;
+            break;
+        case kIntake:
+            return kIntake;
             break;
         default:
-            return kBottom;
+            return kIntake;
             break;
     }
 }

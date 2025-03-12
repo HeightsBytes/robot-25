@@ -18,10 +18,11 @@
 class ElevatorSubsystem : public frc2::SubsystemBase {
  public:
   enum class ElevatorState{
-    kTop,
-    kMiddleTop,
-    kMiddleBottom,
-    kBottom,
+    kL4,
+    kL3,
+    kL2,
+    kL1,
+    kIntake,
     kSwitching
   };
 
@@ -39,18 +40,21 @@ class ElevatorSubsystem : public frc2::SubsystemBase {
     return m_actual;
   };
 
-  void SetTarget(ElevatorState state);
+  void SetTarget(ElevatorState state){
+    m_target = state;
+  }
 
-  ElevatorState GetNextState(ElevatorState state) const;
-  ElevatorState GetPreviousState(ElevatorState state) const;
+  static ElevatorState GetNextState(ElevatorState state);
+  static ElevatorState GetPreviousState(ElevatorState state);
 
+/*
   bool GetTopLimitSwitch() const {
     return m_topLimitSwitch.Get();
   };
   bool GetBottomLimitSwitch() const {
     return m_bottomLimitSwitch.Get();
   };
-
+*/
   frc2::CommandPtr SetTargetCMD(ElevatorState state) {
     return this->RunOnce([this, state] { SetTarget(state); });
   }
@@ -76,8 +80,8 @@ class ElevatorSubsystem : public frc2::SubsystemBase {
   rev::spark::SparkClosedLoopController m_elevator2Controller;
   // motors
   
-  frc::DigitalInput m_topLimitSwitch;
-  frc::DigitalInput m_bottomLimitSwitch;
+  //frc::DigitalInput m_topLimitSwitch;
+  //frc::DigitalInput m_bottomLimitSwitch;
 
   ElevatorState m_target;
   ElevatorState m_actual;

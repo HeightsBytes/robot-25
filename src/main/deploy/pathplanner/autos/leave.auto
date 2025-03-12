@@ -7,19 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "advanced"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "advancedpt2"
+            "pathName": "leave"
           }
         }
       ]

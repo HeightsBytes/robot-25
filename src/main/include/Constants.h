@@ -124,28 +124,28 @@ inline constexpr int kOperatorControllerPort = 1;
 
 namespace ClawConstants {
   inline constexpr int kIntakeMotorPort = 22;
-  inline constexpr int kPivotMotorPort = 44;
-  inline constexpr int kSensorPort = 10;
+  inline constexpr int kPivotMotorPort = 46;
+  inline constexpr int kSensorPort = 14;
 
-  inline constexpr float kPivotEncoderRatio = 0.0;
+  inline constexpr float kPivotEncoderRatio = 1.0;
 
-  inline constexpr double kP = 0.20000000298023224;
+  inline constexpr double kP = 0.05000000298023224;
   inline constexpr double kI = 0;
-  inline constexpr double kD = 0.10999999940395355;
+  inline constexpr double kD = 0.30;
   
   namespace Speeds{
     inline constexpr double kStopped = 0;
-    inline constexpr double kIntake = .3;
-    inline constexpr double kEject = .3;
+    inline constexpr double kIntake = -.2;
+    inline constexpr double kEject = .2;
   }
   namespace PivotPositions{
-    inline constexpr double kL1 = -5.8;
-    inline constexpr double kL2 = -5.8;
-    inline constexpr double kL3 = 0;
-    inline constexpr double kL4 = 0;
-    inline constexpr double kCoral = 0;
+    inline constexpr double kIntake = 0.5; 
+    inline constexpr double kL2 = 2.5;
+    inline constexpr double kL3 = 3; 
+    inline constexpr double kL4 = 4;
+    inline constexpr double kCoral = 6; // left
     
-    inline constexpr double kTollerance = 5;
+    inline constexpr double kTollerance = .05;
   }
   
 }
@@ -153,18 +153,19 @@ namespace ClawConstants {
 namespace ElevatorConstants {
   inline constexpr int kElevatorMotorPort = 10;
   inline constexpr int kElevatorMotor2Port = 11;
-  inline constexpr double kElevatorEncoderRatio = 1 / 60;
-  inline constexpr double kP = 0.0;
+  inline constexpr double kElevatorEncoderRatio = 1;
+  inline constexpr double kP = 0.2; 
   inline constexpr double kI = 0.0;
-  inline constexpr double kD = 0.0;
+  inline constexpr double kD = 0.10999999940395355;
   inline constexpr int kTopLimitChannel = 0;
   inline constexpr int kBottomLimitChannel = 0;
   
   namespace Positions{
-      inline constexpr double kTop = 0;
-      inline constexpr double kMiddleTop = 0;
-      inline constexpr double kMiddleBottom = 0;
-      inline constexpr double kBottom = 0;
-      inline constexpr double kTolerance = 0;
+      inline constexpr double kL1 = 50;
+      inline constexpr double kL3 = 200;
+      inline constexpr double kL2 = 100;
+      inline constexpr double kL4 = 250;
+      inline constexpr double kIntake = 0;
+      inline constexpr double kTolerance = 1;
   } // namespace Positions
 }  // namespace ElevatorConstants

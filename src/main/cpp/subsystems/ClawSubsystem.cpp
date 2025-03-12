@@ -7,10 +7,11 @@
 ClawSubsystem::ClawSubsystem() :
     m_intake(ClawConstants::kIntakeMotorPort, rev::spark::SparkMax::MotorType::kBrushless),
     m_pivot(ClawConstants::kPivotMotorPort, rev::spark::SparkMax::MotorType::kBrushless),
-    m_pivotEncoder(m_pivot.GetAbsoluteEncoder()),
+    m_pivotEncoder(m_pivot.GetEncoder()),
     m_pivotController(m_pivot.GetClosedLoopController()),
     m_pivotActual(PivotState::kSwitching),
-    m_pivotTarget(PivotState::kCoral),
+    m_pivotTarget(PivotState::kIntake),
+    m_sensor(ClawConstants::kSensorPort),
     m_intakeTarget(IntakeState::kStopped) {
 
         m_pivotConfig
@@ -20,7 +21,6 @@ ClawSubsystem::ClawSubsystem() :
         m_intakeConfig
             .SetIdleMode(rev::spark::SparkMaxConfig::IdleMode::kCoast)
             .Inverted(false);
-        
         m_pivotConfig.encoder
             .PositionConversionFactor(ClawConstants::kPivotEncoderRatio);
         m_pivotConfig.closedLoop
@@ -29,7 +29,7 @@ ClawSubsystem::ClawSubsystem() :
                 ClawConstants::kI, 
                 ClawConstants::kD)
             .PositionWrappingEnabled(false)
-            .OutputRange(-1, 1);
+            .OutputRange(-.5, .5);
 
         m_intake.Configure(m_intakeConfig, rev::spark::SparkMax::ResetMode::kResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
         m_pivot.Configure(m_pivotConfig, rev::spark::SparkMax::ResetMode::kResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
@@ -42,9 +42,15 @@ void ClawSubsystem::Periodic() {
     m_pivotController.SetReference(StateToOutput(m_pivotTarget), 
         rev::spark::SparkMax::ControlType::kPosition);
     
-    m_intake.Set(StateToOutput(m_intakeTarget));
+    if(StateToOutput(m_intakeTarget) == ClawConstants::Speeds::kStopped){
+        m_intake.StopMotor();
+    } else {
+        m_intake.Set(StateToOutput(m_intakeTarget));
+    }
 
-    frc::SmartDashboard::PutNumber("Claw Angle", GetPivotAngle());
+    frc::SmartDashboard::PutString("Claw Target", ToStr(m_pivotTarget));
+    frc::SmartDashboard::PutString("Claw Actual", ToStr(m_pivotActual));
+    //frc::SmartDashboard::PutBoolean("sensor", GetSensor());
 }
 
 double ClawSubsystem::StateToOutput(IntakeState state) const{
@@ -72,8 +78,8 @@ double ClawSubsystem::StateToOutput(PivotState state) const {
     namespace PP = ClawConstants::PivotPositions;
 
     switch(state){
-        case kL1:
-            return PP::kL1;
+        case kIntake:
+            return PP::kIntake;
             break;
         case kL2:
             return PP::kL2;
@@ -99,8 +105,8 @@ void ClawSubsystem::CheckState(){
 
     double angle = GetPivotAngle();
 
-    if(frc::IsNear(PP::kL1, angle, PP::kTollerance)){
-        m_pivotActual =  kL1;
+    if(frc::IsNear(PP::kIntake, angle, PP::kTollerance)){
+        m_pivotActual =  kIntake;
         return;
     }
     if(frc::IsNear(PP::kL2, angle, PP::kTollerance)){
@@ -111,8 +117,8 @@ void ClawSubsystem::CheckState(){
         m_pivotActual =  kL3;
         return;
     }
-    if(frc::IsNear(PP::kL1, angle, PP::kTollerance)){
-        m_pivotActual =  kL3;
+    if(frc::IsNear(PP::kL4, angle, PP::kTollerance)){
+        m_pivotActual =  kL4;
         return;
     }
         if(frc::IsNear(PP::kCoral, angle, PP::kTollerance)){
@@ -143,8 +149,8 @@ std::string ClawSubsystem::ToStr(PivotState state) const{
     using enum PivotState;
 
     switch(state){
-        case kL1:
-            return "L1";
+        case kIntake:
+            return "Intake";
             break;
         case kL2:
             return "L2";

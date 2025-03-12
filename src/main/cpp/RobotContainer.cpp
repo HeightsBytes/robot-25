@@ -5,8 +5,10 @@
 #include "RobotContainer.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <cameraserver/CameraServer.h>
 #include <frc2/command/CommandScheduler.h>
 #include <frc2/command/Commands.h>
+#include <frc2/command/button/POVButton.h>
 #include <pathplanner/lib/auto/NamedCommands.h>
 #include <pathplanner/lib/commands/PathPlannerAuto.h>
 
@@ -14,8 +16,7 @@
 
 RobotContainer::RobotContainer() {
   m_chooser.SetDefaultOption("None", "None");
-  m_chooser.AddOption("New Auto", "New Auto");
-  m_chooser.AddOption("super cool auto", "super cool auto");
+  m_chooser.AddOption("leave", "leave");
 
   // Other Commands
   pathplanner::NamedCommands::registerCommand(
@@ -25,7 +26,11 @@ RobotContainer::RobotContainer() {
   frc::SmartDashboard::PutData("Auto Chooser", &m_chooser);
   frc::SmartDashboard::PutData("Command Scheduler",
                                &frc2::CommandScheduler::GetInstance());
-  frc::SmartDashboard::PutBoolean("Operator Manual Mode", false);
+  //frc::SmartDashboard::PutBoolean("Operator Manual Mode", false);
+
+  //frc::SmartDashboard::PutBoolean("sensor", m_claw.GetSensor());
+
+  frc::CameraServer::StartAutomaticCapture();
 
   // Configure the button bindings
   ConfigureDriverButtons();
@@ -37,6 +42,7 @@ RobotContainer::RobotContainer() {
       [this] { return m_driverController.GetLeftY(); },
       [this] { return m_driverController.GetRightX(); },
       [this] { return m_driverController.GetRightTriggerAxis(); }));
+
 }
 
 
@@ -45,14 +51,25 @@ void RobotContainer::ConfigureDriverButtons() {
 }
 
 void RobotContainer::ConfigureOperatorButtons() {
-  if(!frc::SmartDashboard::GetBoolean("Operator Manual Mode", false)){
-    m_operatorController.A().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kMiddleBottom));
-    m_operatorController.B().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kBottom));
-    m_operatorController.X().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kMiddleTop));
-    m_operatorController.Y().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kTop));
 
-    
-  }
+    m_operatorController.RightTrigger().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::GetNextState(m_elevator.GetTarget())));
+    m_operatorController.LeftTrigger().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::GetPreviousState(m_elevator.GetTarget())));
+
+    frc2::POVButton(&m_operatorController.GetHID(), 0).OnTrue(m_claw.SetPivotTargetCMD(ClawSubsystem::PivotState::kCoral)); // up
+    frc2::POVButton(&m_operatorController.GetHID(), 90).OnTrue(m_claw.SetPivotTargetCMD(ClawSubsystem::PivotState::kL2)); // right
+    frc2::POVButton(&m_operatorController.GetHID(), 180).OnTrue(m_claw.SetPivotTargetCMD(ClawSubsystem::PivotState::kIntake)); // down
+    frc2::POVButton(&m_operatorController.GetHID(), 270).OnTrue(m_claw.SetPivotTargetCMD(ClawSubsystem::PivotState::kL3)); // left
+
+    m_operatorController.LeftBumper().OnTrue(m_claw.SetIntakeTargetCMD(ClawSubsystem::IntakeState::kStopped));
+    m_operatorController.RightBumper().OnTrue(m_claw.SetIntakeTargetCMD(ClawSubsystem::IntakeState::kIntaking));
+
+    m_operatorController.B().OnTrue(m_claw.SetIntakeTargetCMD(ClawSubsystem::IntakeState::kEjecting));
+    m_operatorController.Y().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kL2));
+    m_operatorController.X().OnTrue(m_claw.IntakeCMD());
+
+    //m_operatorController.LeftTrigger().OnTrue(m_claw.Intake());
+    //m_operatorController.LeftBumper().OnTrue(m_claw.SetIntakeTargetCMD(ClawSubsystem::IntakeState::kStopped));
+  
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

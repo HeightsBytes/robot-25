@@ -50,12 +50,14 @@
 #include <rev/SparkFlex.h>
 #include <rev/config/SparkMaxConfig.h>
 #include <rev/config/SparkFlexConfig.h>
+#include <rev/SparkMaxAlternateEncoder.h>
 #include <units/angle.h>
 #include <units/power.h>
 
 #include "Constants.h"
 
 class ClawSubsystem : public frc2::SubsystemBase {
+ public:
   enum class IntakeState {
     kIntaking,
     kStopped,
@@ -63,13 +65,12 @@ class ClawSubsystem : public frc2::SubsystemBase {
   };
   enum class PivotState {
     kSwitching,
-    kL1,
+    kIntake,
     kL2,
     kL3,
     kL4,
     kCoral
   };
- public:
   ClawSubsystem();
 
   void Periodic() override;
@@ -79,25 +80,37 @@ class ClawSubsystem : public frc2::SubsystemBase {
   };
   bool AtPivotTarget();
 
-  void SetPivotTarget(PivotState state);
-  void SetIntakeTarget(IntakeState state);
+  void SetPivotTarget(PivotState state){
+    m_pivotTarget = state;
+  }
+  void SetIntakeTarget(IntakeState state){
+    m_intakeTarget = state;
+  };
 
-  PivotState GetPivotTarget();
-  PivotState GetPivotActual();
-  IntakeState GetIntakeTarget();
-  IntakeState GetIntakeActual();
-
-  bool GetSensor();
-
-  frc2::CommandPtr Intake(){
-    return this->RunOnce([this]{
-      while (!GetSensor()){
-        SetIntakeTarget(IntakeState::kIntaking);
-      }
-      SetIntakeTarget(IntakeState::kStopped);
-    });
+  PivotState GetPivotTarget() const {
+    return m_pivotTarget;
+  }
+  PivotState GetPivotActual() const {
+    return m_pivotActual;
+  }
+  IntakeState GetIntakeTarget() const {
+    return m_intakeTarget;
   }
 
+  bool GetSensor() const {
+    m_sensor.Get();
+  }
+
+  void Intake(){
+    while(!GetSensor()){
+      SetIntakeTarget(IntakeState::kEjecting);
+    }
+    SetIntakeTarget(IntakeState::kStopped);
+  }
+
+  frc2::CommandPtr IntakeCMD(){
+    return this->RunOnce([this]{Intake();});
+  }
 
   frc2::CommandPtr SetIntakeTargetCMD(IntakeState state){
     return this->RunOnce([this, state]{SetIntakeTarget(state); });
@@ -123,7 +136,7 @@ class ClawSubsystem : public frc2::SubsystemBase {
   rev::spark::SparkMaxConfig m_pivotConfig;
   rev::spark::SparkFlexConfig m_intakeConfig;
 
-  rev::spark::SparkAbsoluteEncoder m_pivotEncoder;
+  rev::spark::SparkRelativeEncoder m_pivotEncoder;
   rev::spark::SparkClosedLoopController m_pivotController;
   // motors
 
@@ -132,6 +145,6 @@ class ClawSubsystem : public frc2::SubsystemBase {
 
   IntakeState m_intakeTarget;
 
-  frc::DigitalInput m_sensor{ClawConstants::kSensorPort};
+  frc::DigitalInput m_sensor;
 
 };
