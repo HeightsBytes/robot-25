@@ -12,6 +12,8 @@
 #include <pathplanner/lib/auto/NamedCommands.h>
 #include <pathplanner/lib/commands/PathPlannerAuto.h>
 
+#include "commands/Intake.h"
+
 #include <frc2/command/Commands.h>
 
 RobotContainer::RobotContainer() {
@@ -28,9 +30,7 @@ RobotContainer::RobotContainer() {
                                &frc2::CommandScheduler::GetInstance());
   //frc::SmartDashboard::PutBoolean("Operator Manual Mode", false);
 
-  //frc::SmartDashboard::PutBoolean("sensor", m_claw.GetSensor());
-
-  frc::CameraServer::StartAutomaticCapture();
+  //frc::CameraServer::StartAutomaticCapture();
 
   // Configure the button bindings
   ConfigureDriverButtons();
@@ -65,7 +65,9 @@ void RobotContainer::ConfigureOperatorButtons() {
 
     m_operatorController.B().OnTrue(m_claw.SetIntakeTargetCMD(ClawSubsystem::IntakeState::kEjecting));
     m_operatorController.Y().OnTrue(m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kL2));
-    m_operatorController.X().OnTrue(m_claw.IntakeCMD());
+    m_operatorController.X().OnTrue(
+      Intake(&m_claw).ToPtr()
+      );
 
     //m_operatorController.LeftTrigger().OnTrue(m_claw.Intake());
     //m_operatorController.LeftBumper().OnTrue(m_claw.SetIntakeTargetCMD(ClawSubsystem::IntakeState::kStopped));

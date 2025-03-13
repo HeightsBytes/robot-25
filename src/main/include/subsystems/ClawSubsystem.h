@@ -100,17 +100,14 @@ class ClawSubsystem : public frc2::SubsystemBase {
   bool GetSensor() const {
     return m_sensor.Get();
   }
-
+/*
   void Intake(){
-    while(!GetSensor()){
+    while(GetSensor()){
       SetIntakeTarget(IntakeState::kEjecting);
     }
     SetIntakeTarget(IntakeState::kStopped);
   }
-
-  frc2::CommandPtr IntakeCMD(){
-    return this->RunOnce([this]{Intake();});
-  }
+*/
 
   frc2::CommandPtr SetIntakeTargetCMD(IntakeState state){
     return this->RunOnce([this, state]{SetIntakeTarget(state); });

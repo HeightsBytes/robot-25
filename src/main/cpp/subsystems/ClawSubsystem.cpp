@@ -50,6 +50,7 @@ void ClawSubsystem::Periodic() {
 
     frc::SmartDashboard::PutString("Claw Target", ToStr(m_pivotTarget));
     frc::SmartDashboard::PutString("Claw Actual", ToStr(m_pivotActual));
+    frc::SmartDashboard::PutBoolean("sensor", GetSensor());
     //frc::SmartDashboard::PutBoolean("sensor", GetSensor());
 }
 
