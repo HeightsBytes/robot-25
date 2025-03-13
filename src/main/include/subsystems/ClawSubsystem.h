@@ -98,7 +98,7 @@ class ClawSubsystem : public frc2::SubsystemBase {
   }
 
   bool GetSensor() const {
-    m_sensor.Get();
+    return m_sensor.Get();
   }
 
   void Intake(){
