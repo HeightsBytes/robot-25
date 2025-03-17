@@ -169,3 +169,27 @@ namespace ElevatorConstants {
       inline constexpr double kTolerance = 1;
   } // namespace Positions
 }  // namespace ElevatorConstants
+
+namespace AutoAlignConstants{
+  inline constexpr double kXP = 0.125;
+  inline constexpr double kXI = 0;
+  inline constexpr double kXD = 0.01;
+
+  inline constexpr double kYP = 0.125;
+  inline constexpr double kYI = 0;
+  inline constexpr double kYD = 0.01;
+
+  inline constexpr double kRotP = 0.125;
+  inline constexpr double kRotI = 0;
+  inline constexpr double kRotD = 0.01;
+
+  inline constexpr double kRotSetpoint = 0;
+  inline constexpr double kXSetpoint = 0;
+  inline constexpr double kRightYSetpoint = 0;
+  inline constexpr double kLeftYSetPoint = 0;
+
+  inline constexpr double kRotTolerance = 1;
+  inline constexpr double kXTolerance = 1;
+  inline constexpr double kYTolerance = 1;
+
+}
