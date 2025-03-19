@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/Intake.h"
+#include <frc/Timer.h>
+#include "Constants.h"
 
 
 Intake::Intake(ClawSubsystem* claw) : m_claw(claw){
@@ -27,6 +29,7 @@ bool Intake::IsFinished() {
   if(m_claw->GetSensor()){
     return false;
   } else {
+    frc::Wait(ClawConstants::kSensorDelay);
     return true;
   }
 }

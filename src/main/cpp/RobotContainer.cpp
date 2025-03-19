@@ -19,6 +19,7 @@
 RobotContainer::RobotContainer() {
   m_chooser.SetDefaultOption("None", "None");
   m_chooser.AddOption("leave", "leave");
+  m_chooser.AddOption("1C-L3", "1C-L3");
 
   // Other Commands
   pathplanner::NamedCommands::registerCommand(
@@ -82,3 +83,4 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
     return pathplanner::PathPlannerAuto(selected).ToPtr();
   }
 }
+

@@ -132,6 +132,8 @@ namespace ClawConstants {
   inline constexpr double kP = 0.05000000298023224;
   inline constexpr double kI = 0;
   inline constexpr double kD = 0.30;
+
+  inline constexpr units::second_t kSensorDelay = 0.18_s;
   
   namespace Speeds{
     inline constexpr double kStopped = 0;
