@@ -186,12 +186,12 @@ namespace AutoAlignConstants{
   inline constexpr double kRotD = 0.01;
 
   inline constexpr double kRotSetpoint = 0;
-  inline constexpr double kXSetpoint = 0;
-  inline constexpr double kRightYSetpoint = 0;
-  inline constexpr double kLeftYSetPoint = 0;
+  inline constexpr double kXSetpoint = 15;
+  inline constexpr double kRightYSetpoint = 19.34;
+  inline constexpr double kLeftYSetPoint = -17.4;  
 
-  inline constexpr double kRotTolerance = 1;
-  inline constexpr double kXTolerance = 1;
-  inline constexpr double kYTolerance = 1;
+  inline constexpr double kRotTolerance = 2;
+  inline constexpr double kXTolerance = 0.01;
+  inline constexpr double kYTolerance = 0.01;
 
 }

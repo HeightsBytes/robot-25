@@ -24,6 +24,13 @@ RobotContainer::RobotContainer() {
   // Other Commands
   pathplanner::NamedCommands::registerCommand(
       "drive_switch", std::move(m_drive.SetGyro(180_deg)));
+  pathplanner::NamedCommands::registerCommand("AutoAlign-right", AutoAlign(&m_drive, true).ToPtr());
+  pathplanner::NamedCommands::registerCommand("ElevatorL3", m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kL3));
+  pathplanner::NamedCommands::registerCommand("StartIntaking", m_claw.SetIntakeTargetCMD(ClawSubsystem::IntakeState::kIntaking));
+  pathplanner::NamedCommands::registerCommand("StopIntaking", m_claw.SetIntakeTargetCMD(ClawSubsystem::IntakeState::kStopped));
+  pathplanner::NamedCommands::registerCommand("ElevatorIntake", m_elevator.SetTargetCMD(ElevatorSubsystem::ElevatorState::kIntake));
+  pathplanner::NamedCommands::registerCommand("ClawL2", m_claw.SetPivotTargetCMD(ClawSubsystem::PivotState::kL2));
+  pathplanner::NamedCommands::registerCommand("ClawIntake", m_claw.SetPivotTargetCMD(ClawSubsystem::PivotState::kIntake));
 
   frc::SmartDashboard::PutData("PDP", &m_pdp);
   frc::SmartDashboard::PutData("Auto Chooser", &m_chooser);
@@ -49,6 +56,12 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::ConfigureDriverButtons() {
   m_driverController.A().OnTrue(frc2::cmd::Print("Example!"));
+  m_driverController.LeftBumper().OnTrue(
+    AutoAlign(&m_drive, false).ToPtr()
+  );
+  m_driverController.RightBumper().OnTrue(
+    AutoAlign(&m_drive, true).ToPtr()
+  );
 }
 
 void RobotContainer::ConfigureOperatorButtons() {

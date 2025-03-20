@@ -23,6 +23,7 @@
 #include "subsystems/ElevatorSubsystem.h"
 #include "subsystems/ClawSubsystem.h"
 #include "commands/DefaultDrive.h"
+#include "commands/AutoAlign.h"
 
 class RobotContainer {
  public:
