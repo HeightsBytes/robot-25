@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2053125,
-        "y": 6.4990625
+        "x": 5.7890625,
+        "y": 6.54171875
       },
       "isLocked": false,
       "linkedName": "sap2-end"
     },
     {
       "anchor": {
-        "x": 1.633125,
-        "y": 7.3278125
+        "x": 4.216875,
+        "y": 6.8890625
       },
       "prevControl": {
-        "x": 2.77265625,
-        "y": 6.68796875
+        "x": 5.356406249999994,
+        "y": 6.249218749999999
       },
       "nextControl": null,
       "isLocked": false,
