@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.484375,
-        "y": 5.707621173469388
+        "x": 4.88109375,
+        "y": 5.45703125
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.484375,
-        "y": 5.707621173469388
+        "x": 5.38078125,
+        "y": 5.706875
       },
       "isLocked": false,
-      "linkedName": "1c-l3"
+      "linkedName": "sap2-end"
     },
     {
       "anchor": {
-        "x": 1.5669642857142858,
-        "y": 7.005963010204081
+        "x": 5.8865625,
+        "y": 6.3040625
       },
       "prevControl": {
-        "x": 0.5669642857142858,
-        "y": 7.005963010204081
+        "x": 5.38078125,
+        "y": 6.02375
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -42,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -51.981057406829834
+    "rotation": -129.80557109226527
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -124.24903300681208
+    "rotation": -125.90972307917767
   },
   "useDefaultConstraints": true
 }

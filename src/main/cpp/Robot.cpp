@@ -5,6 +5,7 @@
 #include "Robot.h"
 
 #include <frc2/command/CommandScheduler.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 Robot::Robot() {}
 

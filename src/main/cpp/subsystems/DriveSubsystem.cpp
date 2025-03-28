@@ -27,7 +27,7 @@ DriveSubsystem::DriveSubsystem()
       //m_visionSystem(VisionSubsystem::GetInstance()),
       m_poseEstimator(kDriveKinematics, GetHeading(), GetModulePositions(),
                       frc::Pose2d()),
-      m_vision(false) {
+      m_vision(true) {
 
   frc::SmartDashboard::PutData("Field", &m_field);
 

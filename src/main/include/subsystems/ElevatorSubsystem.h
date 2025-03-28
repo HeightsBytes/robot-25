@@ -18,7 +18,8 @@
 class ElevatorSubsystem : public frc2::SubsystemBase {
  public:
   enum class ElevatorState{
-    kL4,
+    kAlgae1,
+    kAlgae2,
     kL3,
     kL2,
     kL1,

@@ -13,6 +13,7 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
+#include <frc2/command/button/CommandPS4Controller.h>
 #include <pathplanner/lib/auto/AutoBuilder.h>
 
 #include <optional>
@@ -38,7 +39,7 @@ class RobotContainer {
   frc2::CommandXboxController m_driverController{
     OIConstants::kDriverControllerPort
   };
-  frc2::CommandXboxController m_operatorController{
+  frc2::CommandPS4Controller m_operatorController{
     OIConstants::kOperatorControllerPort
   };
 

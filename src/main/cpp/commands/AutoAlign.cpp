@@ -12,51 +12,49 @@ AutoAlign::AutoAlign(DriveSubsystem* drive, bool kIsRight) :
   kIsRight(kIsRight)
 {
   AddRequirements(drive);
-  m_lastRobotAngle = 0_deg;
-  m_targetAngle = 0_deg;
   m_hasTarget = false;
-
-  m_xController.EnableContinuousInput(-180, 180);
-  m_yController.EnableContinuousInput(-180, 180);
-  m_rotController.EnableContinuousInput(-180, 180);
 }
 
 // Called when the command is initially scheduled.
 void AutoAlign::Initialize() {
 
+    // PID
+  m_controller.SetTolerance(AutoAlignConstants::kTolerance);
 
+  m_targetPose = frc::Pose2d(
+    frc::Translation2d(units::meter_t(AutoAlignConstants::kXSetpoint), units::meter_t(kIsRight ? AutoAlignConstants::kRightYSetpoint : AutoAlignConstants::kLeftYSetPoint)),
+    frc::Rotation2d(units::radian_t(AutoAlignConstants::kRotSetpoint))
+  );
 
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoAlign::Execute() {
 
-    // PID
-  m_rotController.SetSetpoint(AutoAlignConstants::kRotSetpoint);
-  m_rotController.SetTolerance(AutoAlignConstants::kRotTolerance);
-
-  m_xController.SetSetpoint(AutoAlignConstants::kXSetpoint);
-  m_xController.SetTolerance(AutoAlignConstants::kXTolerance);
-
-  m_yController.SetSetpoint(kIsRight ? AutoAlignConstants::kRightYSetpoint : AutoAlignConstants::kLeftYSetPoint);
-  m_yController.SetTolerance(AutoAlignConstants::kYTolerance);
-
-
   frc::SmartDashboard::PutBoolean("has target", m_hasTarget);
   frc::SmartDashboard::PutBoolean("AutoAlign Finished", false);
   
+  // set camera stuff
   m_result = m_camera.GetLatestResult();
   m_hasTarget = m_result.HasTargets();
   m_target = m_result.GetBestTarget();
+  m_bestCameraToTarget = m_target.GetBestCameraToTarget();
 
-  m_targetAngle = units::degree_t(m_target.GetYaw());
-  m_lastRobotAngle = m_drive->GetHeading().Degrees();
+  m_robotPose = frc::Pose2d(
+    frc::Translation2d(m_bestCameraToTarget.X(), m_bestCameraToTarget.Y()),
+    frc::Rotation2d(m_bestCameraToTarget.Rotation().Angle())
+  );
 
-  units::meters_per_second_t xSpeed = units::meters_per_second_t(m_xController.Calculate(m_target.GetArea()) / 16);
-  units::meters_per_second_t ySpeed = units::meters_per_second_t(m_yController.Calculate(m_target.GetYaw()) / 16);
-  units::radians_per_second_t rotValue = units::radians_per_second_t(m_rotController.Calculate(m_target.GetSkew()) / 16);
+  frc::ChassisSpeeds speeds = m_controller.Calculate(m_robotPose, m_targetPose, units::meters_per_second_t(0.01), m_targetPose.Rotation());
+  units::meters_per_second_t xSpeed = speeds.vx;
+  units::meters_per_second_t ySpeed = speeds.vy;
+  units::radians_per_second_t rotValue = speeds.omega;
 
-  m_drive->Drive(xSpeed, ySpeed, rotValue, false);
+  frc::SmartDashboard::PutNumber("xSpeed", xSpeed.value());
+  frc::SmartDashboard::PutNumber("ySpeed", ySpeed.value());
+  frc::SmartDashboard::PutNumber("rotValue", rotValue.value());
+
+  //m_drive->Drive(xSpeed, ySpeed, rotValue, false);
 }
 
 // Called once the command ends or is interrupted.
@@ -65,12 +63,11 @@ void AutoAlign::End(bool interrupted) {}
 // Returns true when the command should end.
 bool AutoAlign::IsFinished() {
   if(!m_hasTarget){
-    frc::SmartDashboard::PutBoolean("AutoAlign Finished", true);
+    frc::SmartDashboard::PutBoolean("AutoAlign Finished", false);
     return true;
   } else
 
-  if(m_rotController.AtSetpoint() || m_xController.AtSetpoint() || m_yController.AtSetpoint()){
-    frc::Wait(2_s);
+  if(m_controller.AtReference()){
     frc::SmartDashboard::PutBoolean("AutoAlign Finished", true);
     return true;
   } else {

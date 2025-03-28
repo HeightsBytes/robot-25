@@ -85,11 +85,11 @@ double ClawSubsystem::StateToOutput(PivotState state) const {
         case kL2:
             return PP::kL2;
             break;
-        case kL3:
-            return PP::kL3;
+        case kElevator:
+            return PP::kElevator;
             break;
-        case kL4:
-            return PP::kL3;
+        case kL1:
+            return PP::kL1;
             break;
         case kCoral:
             return PP::kCoral;
@@ -114,12 +114,12 @@ void ClawSubsystem::CheckState(){
         m_pivotActual =  kL2;
         return;
     }
-    if(frc::IsNear(PP::kL3, angle, PP::kTollerance)){
-        m_pivotActual =  kL3;
+    if(frc::IsNear(PP::kElevator, angle, PP::kTollerance)){
+        m_pivotActual =  kElevator;
         return;
     }
-    if(frc::IsNear(PP::kL4, angle, PP::kTollerance)){
-        m_pivotActual =  kL4;
+    if(frc::IsNear(PP::kL1, angle, PP::kTollerance)){
+        m_pivotActual =  kL1;
         return;
     }
         if(frc::IsNear(PP::kCoral, angle, PP::kTollerance)){
@@ -156,11 +156,11 @@ std::string ClawSubsystem::ToStr(PivotState state) const{
         case kL2:
             return "L2";
             break;
-        case kL3:
-            return "L3";
+        case kElevator:
+            return "Elevator";
             break;
-        case kL4:
-            return "L4";
+        case kL1:
+            return "L1";
             break;
         case kCoral:
             return "Coral";

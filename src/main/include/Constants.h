@@ -141,11 +141,11 @@ namespace ClawConstants {
     inline constexpr double kEject = .2;
   }
   namespace PivotPositions{
-    inline constexpr double kIntake = 0.5; 
+    inline constexpr double kIntake = 0.25; 
     inline constexpr double kL2 = 2.5;
-    inline constexpr double kL3 = 3; 
-    inline constexpr double kL4 = 4;
-    inline constexpr double kCoral = 6; // left
+    inline constexpr double kL1 = 3; 
+    inline constexpr double kElevator = 4;
+    inline constexpr double kCoral = 17; // left
     
     inline constexpr double kTollerance = .05;
   }
@@ -165,8 +165,9 @@ namespace ElevatorConstants {
   namespace Positions{
       inline constexpr double kL1 = 50;
       inline constexpr double kL3 = 200;
-      inline constexpr double kL2 = 100;
-      inline constexpr double kL4 = 250;
+      inline constexpr double kL2 = 92;
+      inline constexpr double kAlgae1 = 75;
+      inline constexpr double kAlgae2 = 168;
       inline constexpr double kIntake = 0;
       inline constexpr double kTolerance = 1;
   } // namespace Positions
@@ -175,23 +176,22 @@ namespace ElevatorConstants {
 namespace AutoAlignConstants{
   inline constexpr double kXP = 0.125;
   inline constexpr double kXI = 0;
-  inline constexpr double kXD = 0.01;
+  inline constexpr double kXD = 0.05;
 
   inline constexpr double kYP = 0.125;
   inline constexpr double kYI = 0;
-  inline constexpr double kYD = 0.01;
+  inline constexpr double kYD = 0.05;
 
   inline constexpr double kRotP = 0.125;
   inline constexpr double kRotI = 0;
-  inline constexpr double kRotD = 0.01;
+  inline constexpr double kRotD = 0.05;
 
-  inline constexpr double kRotSetpoint = 0;
-  inline constexpr double kXSetpoint = 15;
-  inline constexpr double kRightYSetpoint = 19.34;
-  inline constexpr double kLeftYSetPoint = -17.4;  
+  inline constexpr double kRotSetpoint = 179;
+  inline constexpr double kXSetpoint = 0.52;
+  inline constexpr double kRightYSetpoint = 0.09;
+  inline constexpr double kLeftYSetPoint = 0.09;  
 
-  inline constexpr double kRotTolerance = 2;
-  inline constexpr double kXTolerance = 0.01;
-  inline constexpr double kYTolerance = 0.01;
-
+  inline constexpr frc::Pose2d kTolerance = frc::Pose2d{
+    0.02_m, 0.02_m, units::radian_t(1 / 60)
+  };
 }

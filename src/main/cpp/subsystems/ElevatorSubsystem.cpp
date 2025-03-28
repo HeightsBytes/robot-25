@@ -59,8 +59,11 @@ double ElevatorSubsystem::StateToOutput(ElevatorState state) const{
     namespace P = ElevatorConstants::Positions;
 
     switch(state){
-        case kL4:
-            return P::kL4;
+        case kAlgae1:
+            return P::kAlgae1;
+            break;
+        case kAlgae2:
+            return P::kAlgae2;
             break;
         case kL3:
             return P::kL3;
@@ -86,8 +89,12 @@ void ElevatorSubsystem::CheckState(){
 
     double position = m_elevatorEncoder.GetPosition();
 
-    if(frc::IsNear(P::kL4, position, P::kTolerance)){
-        m_actual = kL4;
+    if(frc::IsNear(P::kAlgae1, position, P::kTolerance)){
+        m_actual = kAlgae1;
+        return;
+    }
+    if(frc::IsNear(P::kAlgae2, position, P::kTolerance)){
+        m_actual = kAlgae2;
         return;
     }
     if(frc::IsNear(P::kL3, position, P::kTolerance)){
@@ -112,8 +119,11 @@ void ElevatorSubsystem::CheckState(){
 std::string ElevatorSubsystem::ToStr(ElevatorState state) const {
     using enum ElevatorState;
     switch(state) {
-        case kL4:
-            return "L4";
+        case kAlgae1:
+            return "Algae1";
+            break;
+        case kAlgae2:
+            return "Algae2";
             break;
         case kL3:
             return "L3";
@@ -135,15 +145,15 @@ std::string ElevatorSubsystem::ToStr(ElevatorState state) const {
             break;
     }
 }
-
+/*
 ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetNextState(ElevatorState state) {
     using enum ElevatorState;
     switch(state) {
-        case kL4:
-            return kL4;
+        case kAlgae1:
+            return kAlgae1;
             break;
         case kL3:
-            return kL4;
+            return kAlgae;
             break;
         case kL2:
             return kL3;
@@ -163,7 +173,7 @@ ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetNextState(ElevatorState s
 ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetPreviousState(ElevatorState state) {
     using enum ElevatorState;
     switch(state) {
-        case kL4:
+        case kAlgae:
             return kL3;
             break;
         case kL3:
@@ -183,3 +193,4 @@ ElevatorSubsystem::ElevatorState ElevatorSubsystem::GetPreviousState(ElevatorSta
             break;
     }
 }
+*/

@@ -1,0 +1,127 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "side auto p1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ClawElevator"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorL2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ClawL2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StartIntaking"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopIntaking"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "side auto p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorAlgae1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ClawAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StartEjecting"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorAlgae2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "side auto p3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopIntaking"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

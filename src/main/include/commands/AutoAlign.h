@@ -6,6 +6,7 @@
 
 #include <frc2/command/Command.h>
 #include <frc/controller/PIDController.h>
+#include <frc/controller/HolonomicDriveController.h>
 #include <frc2/command/CommandHelper.h>
 #include <photon/PhotonCamera.h>
 #include <units/angle.h>
@@ -45,11 +46,22 @@ class AutoAlign
   photon::PhotonCamera m_camera;
   photon::PhotonPipelineResult m_result;
   photon::PhotonTrackedTarget m_target;
+  frc::Transform3d m_bestCameraToTarget;
+
+  frc::HolonomicDriveController m_controller{
+    m_xController, m_yController, m_rotController
+  };
 
   frc::PIDController m_xController{AutoAlignConstants::kXP, AutoAlignConstants::kXI, AutoAlignConstants::kXD};
   frc::PIDController m_yController{AutoAlignConstants::kYP, AutoAlignConstants::kYI, AutoAlignConstants::kYD};
-  frc::PIDController m_rotController{AutoAlignConstants::kRotP, AutoAlignConstants::kRotI, AutoAlignConstants::kRotD};
+  frc::ProfiledPIDController<units::radian> m_rotController{
+    AutoAlignConstants::kRotP, AutoAlignConstants::kRotI, AutoAlignConstants::kRotD,
+    frc::TrapezoidProfile<units::radian>::Constraints{
+      DriveConstants::kMaxAngularSpeed, DriveConstants::kMaxAngularAcceleration
+    }
+  };
 
-  units::degree_t m_targetAngle;
-  units::degree_t m_lastRobotAngle;
+
+  frc::Pose2d m_targetPose;
+  frc::Pose2d m_robotPose;
 };

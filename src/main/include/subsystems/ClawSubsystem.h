@@ -67,8 +67,8 @@ class ClawSubsystem : public frc2::SubsystemBase {
     kSwitching,
     kIntake,
     kL2,
-    kL3,
-    kL4,
+    kL1,
+    kElevator,
     kCoral
   };
   ClawSubsystem();
