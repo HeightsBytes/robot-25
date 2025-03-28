@@ -45,7 +45,7 @@ RobotContainer::RobotContainer() {
                                &frc2::CommandScheduler::GetInstance());
   //frc::SmartDashboard::PutBoolean("Operator Manual Mode", false);
 
-  //frc::CameraServer::StartAutomaticCapture();
+  frc::CameraServer::StartAutomaticCapture();
 
   // Configure the button bindings
   ConfigureDriverButtons();
