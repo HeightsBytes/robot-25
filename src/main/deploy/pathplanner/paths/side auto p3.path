@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.88109375,
-        "y": 5.45703125
+        "x": 4.80796875,
+        "y": 5.4509375
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.38078125,
-        "y": 5.706875
+        "x": 3.2053125,
+        "y": 6.4990625
       },
       "isLocked": false,
       "linkedName": "sap2-end"
     },
     {
       "anchor": {
-        "x": 5.8865625,
-        "y": 6.3040625
+        "x": 1.633125,
+        "y": 7.3278125
       },
       "prevControl": {
-        "x": 5.38078125,
-        "y": 6.02375
+        "x": 2.77265625,
+        "y": 6.68796875
       },
       "nextControl": null,
       "isLocked": false,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -129.80557109226527
+    "rotation": -52.5238204386386
   },
   "reversed": false,
   "folder": null,

@@ -20,6 +20,9 @@ RobotContainer::RobotContainer() {
   m_chooser.SetDefaultOption("None", "None");
   m_chooser.AddOption("leave", "leave");
   m_chooser.AddOption("side-auto", "side-auto");
+  m_chooser.AddOption("side-auto-no-algae", "side-auto-no-algae");
+  m_chooser.AddOption("sigma", "sigma");
+  m_chooser.AddOption("NewAuto", "NewAuto");
 
   // Other Commands
   pathplanner::NamedCommands::registerCommand(
